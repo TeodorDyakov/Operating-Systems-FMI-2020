@@ -1,7 +1,1 @@
-line=$(grep '/home/SI' passwd.txt)
-a=$(grep ',' $line)
-b=$(grep -v 'v' $line)
-
-cat $(grep 
- 
-
+sed 's/,.*[0-9]/ /' passwd.txt | grep SI | sort -t':' -k1 | cut -d':' -f5,6
