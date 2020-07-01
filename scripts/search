@@ -1,0 +1,9 @@
+#!/bin/bash
+
+str='aa'
+for ((i = 0 ; i < 20 ; i++)); do
+  str+=$str
+done
+
+echo $str"b"$str > str
+echo 
