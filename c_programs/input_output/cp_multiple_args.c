@@ -21,10 +21,13 @@ int main (int argc, char* argv[])
 		}
 		
 		char c;
+		
+		char path[255];
 
-		char* path = strcat(argv[argc - 1], "/"); 
-		path = strcat(path, argv[i]);
-
+		strcpy(path, argv[argc - 1]);
+		strcat(path, "/"); 
+		strcat(path, argv[i]);
+	
 		int copy_fd = open(path, O_CREAT | O_WRONLY);
 				
 		if(copy_fd == -1){
