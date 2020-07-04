@@ -31,6 +31,6 @@ int main (int argc, char* argv[])
 			err(2, "error in writing!\n");
 		}	
 	}
-
+	close(passwd_copy);
 	exit(0);
 }

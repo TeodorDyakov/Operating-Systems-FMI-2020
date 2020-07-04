@@ -29,9 +29,18 @@ int main(int argc, char** argv){
 		if(pid < 0){
 			err(i + 1, "Error in forking process!");
 		} else if(pid > 0){
-			wait(NULL);
-			printf("Path of executed command: %s\n", path);
-		} else {
+			
+			int stat;
+		
+			wait(&stat);
+			
+			if(WIFEXITED(stat)){ 
+        		printf("Exit status: %d\n", WEXITSTATUS(stat)); 
+			} else if(WIFSIGNALED(stat)){ 
+	        	psignal(WTERMSIG(stat), "Exit signal");
+			}
+			
+		} else{
 			execlp(path, argv[i], (char*)NULL);
 		}
 	}
