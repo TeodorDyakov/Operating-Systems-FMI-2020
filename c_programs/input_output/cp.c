@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <err.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -24,9 +23,12 @@ int main (int argc, char* argv[])
 	}
 
 	char c;
-
-	while (read(fd1, &c, 1) > 0) {
-		write(fd2, &c, 1);
+	int read_cnt;
+	
+	while ((read_cnt = read(fd1, &c, sizeof(c))) > 0) {
+		if(read_cnt != write(fd2, &c, sizeof(c))){
+			errx(4, "err");
+		}
 	}
 	
 	close(fd1);

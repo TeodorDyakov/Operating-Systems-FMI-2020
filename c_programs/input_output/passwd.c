@@ -9,17 +9,20 @@ int main (int argc, char* argv[])
 	int fd = open("/etc/passwd", O_RDONLY);
 
 	if(fd == -1){
-		err(1, "failed to open file");	
+		err(1, "/etc/passwd");	
 	}
 	
 	int passwd_copy = open("passwd", O_CREAT | O_WRONLY);
-	
+	if(passwd_copy == -1){
+		err(2, "passwd");	
+	}
+
 	const size_t buffer_sz = 4096;
 	
 	char buf[buffer_sz];
 	int read_cnt = 0;
 	
-	while(read_cnt = read(fd, &buf, buffer_sz)){
+	while(read_cnt = read(fd, &buf, buffer_sz) > 0){
 		
 		for(int i = 0; i < read_cnt; i++){
 			if(buf[i] == ':'){
@@ -31,6 +34,7 @@ int main (int argc, char* argv[])
 			err(2, "error in writing!\n");
 		}	
 	}
+	close(fd);
 	close(passwd_copy);
 	exit(0);
 }

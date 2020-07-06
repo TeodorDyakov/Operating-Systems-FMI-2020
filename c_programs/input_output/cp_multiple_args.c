@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <err.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -38,10 +37,13 @@ int main (int argc, char* argv[])
 				err(3, "%s", path);					
 		}
 		
-		char c;
-		
-		while(read(fd, &c, 1) > 0){
-			write(copy_fd, &c, 1);		
+		char buf[4096];
+		int read_cnt;
+			
+		while((read_cnt = read(fd, &buf, sizeof(buf))) > 0){
+			if(read_cnt != write(copy_fd, &buf, sizeof(buf))){
+				errx(4, "err");
+			}		
 		}
 		close(fd);
 		close(copy_fd);	
