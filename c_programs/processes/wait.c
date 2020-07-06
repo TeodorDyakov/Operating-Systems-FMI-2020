@@ -8,7 +8,11 @@
 int main(){
 	
 	int n = 100000;
-	int pid = fork();
+	pid_t pid = fork();
+		
+	if(pid == -1){
+		exit(-1);
+	}
 
 	if(pid != 0){ 
 		pid_t child_id = wait(NULL);

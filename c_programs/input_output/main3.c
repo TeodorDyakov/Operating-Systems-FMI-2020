@@ -31,16 +31,16 @@ int main(int argc, char* argv[]){
 		
 		chars++;			
 		
-		if(word && ((c == 9) || (c == ' ') || (c == '\n'))){
+		if(word && ((c == ' ') || (c == '\n'))){
 			word = 0;
 		}
 		
-		if(!word && (c != 9 ) && (c != ' ') && (c != '\n')){
+		if(!word && (c != ' ') && (c != '\n')){
 			word = 1;
 			words++;
 		} 
 	}
 	
 	printf("%d %d %d %s\n", lines, words, chars, argv[1]);
-	exit(0);
+
 }

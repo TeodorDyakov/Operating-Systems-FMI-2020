@@ -12,8 +12,7 @@
 int main(int argc, char** argv){
 		
 	if(argc < 3){
-		err(1, "not enough arguments!\n");
-		return 0;
+		errx(1, "not enough arguments!\n");
 	}
 	
 	for(int i = 1; i < 3; i++){
@@ -27,7 +26,7 @@ int main(int argc, char** argv){
 		pid_t pid = fork();
 		
 		if(pid < 0){
-			err(i + 1, "Error in forking process!");
+			err(2, "Error in forking process!");
 		} else if(pid > 0){
 			
 			int stat;

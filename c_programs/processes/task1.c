@@ -8,11 +8,11 @@
 #include<string.h>
 
 #define path_len 255
+
 int main(int argc, char** argv){
 		
 	if(argc < 2){
-		err(99, "no command specified!\n");
-		return 0;
+		errx(99, "no command specified!\n");
 	}
 	
 	char path[path_len + 1];
@@ -24,7 +24,7 @@ int main(int argc, char** argv){
 	pid_t pid = fork();
 	
 	if(pid < 0){
-		err(1, "Error in forking process!");
+		errx(1, "Error in forking process!");
 	} else if(pid > 0){
 		wait(NULL);
 		printf("Path of executed command: %s\n", path);
