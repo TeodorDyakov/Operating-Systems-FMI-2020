@@ -41,7 +41,7 @@ int main (int argc, char* argv[])
 		int read_cnt;
 			
 		while((read_cnt = read(fd, &buf, sizeof(buf))) > 0){
-			if(read_cnt != write(copy_fd, &buf, sizeof(buf))){
+			if(read_cnt != write(copy_fd, &buf, read_cnt)){
 				errx(4, "err");
 			}		
 		}

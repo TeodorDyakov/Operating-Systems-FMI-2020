@@ -26,7 +26,7 @@ int main (int argc, char* argv[])
 	int read_cnt;
 	
 	while ((read_cnt = read(fd1, &c, sizeof(c))) > 0) {
-		if(read_cnt != write(fd2, &c, sizeof(c))){
+		if(read_cnt != write(fd2, &c, read_cnt)){
 			errx(4, "err");
 		}
 	}

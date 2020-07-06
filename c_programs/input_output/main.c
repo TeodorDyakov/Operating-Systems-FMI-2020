@@ -21,15 +21,20 @@ int main()
 	}
 	
 	int read_cnt = 0;
-	char c;
+	char buf[4096];
 	
-	while((read_cnt = read(fd1, &c, 1)) > 0){
-		if(read_cnt != write(fd2, &c, 1)){
+	while((read_cnt = read(fd1, &buf, sizeof(buf))) > 0){
+		if(read_cnt != write(fd2, &buf, read_cnt)){
+			close(fd1);
+			close(fd2);
 			const char* err_msg = "error in writing";
 			write(2, err_msg, strlen(err_msg));			
 			exit(-1);
+
 		}	
 	}
 	
+	close(fd2);
+	close(fd1);
 	exit(0);	
 } 	

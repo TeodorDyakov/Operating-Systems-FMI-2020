@@ -33,7 +33,7 @@ int main (int argc, char* argv[])
 
 	char c;
 
-	while (read(fd1, &c, 1)) {
+	while (read(fd1, &c, 1) > 0) {
 		write(fd3, &c, 1);
 	}
 

@@ -12,8 +12,9 @@ int main (int argc, char* argv[])
 		err(1, "/etc/passwd");	
 	}
 	
-	int passwd_copy = open("passwd", O_CREAT | O_WRONLY);
-	if(passwd_copy == -1){
+	int passwd_copy_fd = open("passwd", O_CREAT | O_WRONLY);
+	
+	if(passwd_copy_fd == -1){
 		err(2, "passwd");	
 	}
 
@@ -30,11 +31,11 @@ int main (int argc, char* argv[])
 			}
 		}
 		
-		if(read_cnt != write(passwd_copy, &buf, read_cnt)){
+		if(read_cnt != write(passwd_copy_fd, &buf, read_cnt)){
 			err(2, "error in writing!\n");
 		}	
 	}
 	close(fd);
-	close(passwd_copy);
+	close(passwd_copy_fd);
 	exit(0);
 }

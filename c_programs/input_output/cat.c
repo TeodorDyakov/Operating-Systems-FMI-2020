@@ -21,7 +21,7 @@ int main(int argc, char ** argv){
 	
 	while((read_cnt = read(fd, &buf, sizeof(buf))) > 0){
 		
-		if(read_cnt != write(1, &buf, sizeof(buf))){
+		if(read_cnt != write(1, &buf, read_cnt)){
 			err(2, "error");
 		}
 	}
