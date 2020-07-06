@@ -8,7 +8,7 @@ int main(int argc, char* argv[]){
 	if(argc > 1){
 		int fd1 = open(argv[1], O_RDONLY);
 		int count = 0;		
-		while(read(fd1, &c, 1) && count < 10){
+		while((read(fd1, &c, 1) > 0) && (count < 10)){
 			if(c == '\n'){
 				count++;			
 			}

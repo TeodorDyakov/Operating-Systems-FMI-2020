@@ -42,7 +42,7 @@ int main (int argc, char* argv[])
 		
 		char c;
 		
-		while(read(fd, &c, 1)){
+		while(read(fd, &c, 1) > 0){
 			write(copy_fd, &c, 1);		
 		}
 		close(fd);
