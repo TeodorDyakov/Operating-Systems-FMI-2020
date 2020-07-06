@@ -41,7 +41,7 @@ int main (int argc, char* argv[])
 	lseek(fd2, 0, SEEK_SET);
 	lseek(fd3, 0, SEEK_SET);
 	
-	while (read(fd2, &c, 1)) {
+	while (read(fd2, &c, 1) > 0) {
 		write(fd1, &c, 1);
 	}
 
@@ -49,7 +49,7 @@ int main (int argc, char* argv[])
 	lseek(fd2, 0, SEEK_SET);
 	lseek(fd3, 0, SEEK_SET);
 
-	while (read(fd3, &c, 1)) {
+	while (read(fd3, &c, 1) > 0) {
 		write(fd2, &c, 1);
 	}
 

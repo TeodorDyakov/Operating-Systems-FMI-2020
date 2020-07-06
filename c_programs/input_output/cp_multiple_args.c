@@ -20,7 +20,6 @@ int main (int argc, char* argv[])
 		int fd = open(argv[i], O_RDONLY);
 
 		if(fd == -1){
-				close(fd);
 				err(2, "%s", argv[i]);					
 		}
 			
@@ -36,7 +35,6 @@ int main (int argc, char* argv[])
 		int copy_fd = open(path, O_CREAT | O_WRONLY);
 				
 		if(copy_fd == -1){
-				close(copy_fd);
 				err(3, "%s", path);					
 		}
 		

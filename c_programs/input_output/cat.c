@@ -10,13 +10,12 @@ int main (int argc, char* argv[]){
 		int fd = open(argv[i], O_RDONLY);
 
 		if( fd == -1){
-			close(fd);
 			err(1,"%s", argv[i]);
 		}
 
 		char c;
 
-		while(read(fd, &c, 1)){
+		while(read(fd, &c, 1) > 0){
 			write(STDOUT_FILENO, &c, 1);
 		}
 
