@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <string.h>
 #include <err.h>
+#include <ctype.h>
 
 int main(int argc, char* argv[]){
 
@@ -31,11 +31,11 @@ int main(int argc, char* argv[]){
 		
 		chars++;			
 		
-		if(word && ((c == 9) || (c == ' ') || (c == '\n'))){
+		if(word && isspace(c)){
 			word = 0;
 		}
 		
-		if(!word && (c != 9 ) && (c != ' ') && (c != '\n')){
+		if(!word && !isspace(c)){
 			word = 1;
 			words++;
 		} 
