@@ -6,14 +6,13 @@
 #include<stdint.h>
 #include<err.h>
 
-int is_little_endian(){
-	unsigned int i = 1;  
-    char *c = (char*)&i;  
-    if (*c)  
-    	return 1;
-	
-	return 0;
-}
+/*
+Напишете програма, която приема точно 2 аргумента. Първият може да бъде само --min, --max или --print (вижте man 3 strcmp). Вторият аргумент е двоичен файл, в който има записани цели неотрицателни двубайтови числа (uint16_t - вижте man stdint.h). Ако първият аргумент е:
+
+--min - програмата отпечатва кое е най-малкото число в двоичния файл.
+--max - програмата отпечатва кое е най-голямото число в двоичния файл.
+--print - програмата отпечатва на нов ред всяко число.
+*/
 
 int main(int argc, char** argv){
 	if(argc != 3){
@@ -37,36 +36,21 @@ int main(int argc, char** argv){
 			//this means we have reached EOF so we stop reading
 			break;
 		}
-		uint16_t  a = 0;
-		if(is_little_endian()){
-			//swap byte order if on little endian arch
-			char swapped[2] = {buf[1], buf[0]};
-			/*
-			cast the address of swapped to a pointer
-			to unsigned 16 bit int then dereference it 
-			*/
-			a = *(uint16_t*)(&swapped);		
-		} else {
-			a = *(uint16_t *)(&buf);
-		}
+		uint16_t num = *(uint16_t *)(&buf);
 		
 		if(strcmp(argv[1], "--min") == 0){
-			if(min > a){
-				min = a;
-			}		 		
+			min = (min > num) ? num : min;		 		
 		} else if(strcmp(argv[1], "--max") == 0){
-			if(max < a){
-				max = a;
-			}
+			max = (max < num) ? num : max;
 		} else { 						
-			printf("%d\n", a);
+			printf("%d\n", num);
 		} 				
 	}
 		
 	if(strcmp(argv[1], "--min") == 0){
-		printf("min is %d", min);		 		
+		printf("min is %d\n", min);		 		
 	} else if(strcmp(argv[1], "--max") == 0){
-		printf("max is %d", max);
+		printf("max is %d\n", max);
 	}
 
 	close(fd);
