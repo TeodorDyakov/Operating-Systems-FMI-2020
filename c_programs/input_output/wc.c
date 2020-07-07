@@ -32,10 +32,13 @@ int main(int argc, char* argv[]){
 		chars++;			
 		
 		if(word && isspace(c)){
+			//end of word, set word flag to 0
 			word = 0;
+			continue;
 		}
 		
 		if(!word && !isspace(c)){
+			//beginning of word, set word flag to 1
 			word = 1;
 			words++;
 		} 
