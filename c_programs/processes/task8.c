@@ -57,9 +57,10 @@ int main(int argc, char** argv){
 			}
 		}	
 	}
-		
+			
 	if(child_exited_0 == -1){	
 		printf("%d\n", -1);
 	}
 	
+	exit(0);	
 }
