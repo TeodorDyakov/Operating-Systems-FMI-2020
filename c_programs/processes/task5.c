@@ -7,59 +7,48 @@
 #include<stdio.h>
 #include<string.h>
 
-int main(int argc, char** argv){
+#define path_len 255
+
+int main(int argc, char** argv){	
 	
 	if(argc < 3){
-		errx(1, "not enough arguments!");
+		errx(1, "not enough arguments!\n");
 	}
 	
-	pid_t pid;
-	
-	for(int i = 1; i < argc; i++){	
-		pid = fork();		
+	for(int i = 1; i < 3; i++){
 		
-		if(pid > 0){			
-		}else if(pid == 0){
-			char buf[200];
-			buf[sizeof(buf) - 1] = '\0';
-			strcpy(buf, "/bin/");
-			strcat(buf, argv[i]);
-			if(execlp(buf, argv[i], NULL) == -1){
-				exit(EXIT_FAILURE);
-			}else{
-				exit(EXIT_SUCCESS);
-			}
-		} else {
+		char path[path_len + 1];
+		path[path_len] = '\0';
+		
+		strcpy(path, "/bin/");
+		strncat(path, argv[i], path_len - strlen(path));
+			
+		pid_t pid = fork();
+		
+		if(pid < 0){
 			perror("fork");
-			exit(EXIT_FAILURE);
+		} else if(pid > 0){
+			
+			int stat;
+		
+			pid_t cpid = wait(&stat);
+			if(pid == -1){
+				perror("wait");
+				exit(-1);
+			}
+			
+			if(WIFEXITED(stat) && (WEXITSTATUS(stat) == 0)){	
+				continue;
+			}else{
+				exit(-42);
+			}			
+		} else{
+			if(execlp(path, argv[i], (char*)NULL) == -1){
+				exit(-1);
+			}
 		}
 	}
 	
-	/*
-	everything from here to end is in parent process
-	*/
-	int child_exited_0 = -1;
-
-	for(int i = 0; i < argc - 1; i++){
-		
-		int status;
-		int cpid = wait(&status);
-
-		if(cpid == -1){
-			perror("wait");
-			exit(-1);
-		}
-
-		if(child_exited_0 == -1){
-			if(WIFEXITED(status) && (WEXITSTATUS(status) == 0)){
-				printf("pid: %d exited with status 0\n", cpid);
-				child_exited_0 = 1;
-			}
-		}	
-	}
-		
-	if(child_exited_0 == -1){	
-		printf("%d\n", -1);
-	}
+	exit(0);
 	
 }
