@@ -9,38 +9,53 @@
 
 int main(int argc, char** argv){
 	
-	pid_t pid = 1;
+	pid_t pid;
 	
-	for(int i = 1; i < argc; i++){		
-		if(pid > 0){
-			pid = fork();			
+	for(int i = 1; i < argc; i++){	
+		pid = fork();		
+		
+		if(pid > 0){			
 		}else if(pid == 0){
 			char buf[200];
 			buf[sizeof(buf) - 1] = '\0';
 			strcpy(buf, "/bin/");
 			strcat(buf, argv[i]);
-			execlp(buf, argv[i], NULL);
+			if(execlp(buf, argv[i], NULL) == -1){
+				exit(EXIT_FAILURE);
+			}else{
+				exit(EXIT_SUCCESS);
+			}
 		} else {
-			perror();
-			errx(1, "error in fork()");
+			perror("fork");
+			exit(EXIT_FAILURE);
 		}
 	}
+	
+	/*
+	everything from here to end is in parent process
+	*/
+	
+	int exited_success_cnt = 0;
+	int exited_unsuccess_cnt = 0;
+	
+	for(int i = 1; i < argc; i++){
 		
-	if(pid > 0){
-		for(int i = 1; i < argc; i++){
-			int status;
-			int cpid = wait(&status);
-			if(cpid == -1){
-				perror("waitpid");
-				exit(EXIT_FAILURE);
-			}
-			if(WIFEXITED(status)){
-				printf("pid: %d exited with status: %d\n", cpid, WEXITSTATUS(status));
-			} else{
-				err(1, "child did not terminate normally");
-			}	
+		int status;
+		int cpid = wait(&status);
+		
+		if(cpid == -1){
+			perror("wait");
+			exit(-1);
+		}
+		if(WIFEXITED(status) && (WEXITSTATUS(status) == 0)){
+			exited_success_cnt++;
+		}else{
+			exited_unsuccess_cnt++;
 		}
 	}	
+	
+	printf("number of commands that were\nsuccesful: %d\nunsuccesful: %d\n",
+		exited_success_cnt, exited_unsuccess_cnt); 
 	
 	exit(0);
 	
