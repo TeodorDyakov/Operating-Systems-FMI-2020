@@ -9,13 +9,13 @@
 
 #define path_len 255
 
-int main(int argc, char** argv){
-		
-	if(argc < 3){
+int main(int argc, char** argv){	
+	
+	if(argc < 4){
 		errx(1, "not enough arguments!\n");
 	}
 	
-	for(int i = 1; i < 3; i++){
+	for(int i = 1; i < 4; i++){
 		
 		char path[path_len + 1];
 		path[path_len] = '\0';
@@ -31,12 +31,13 @@ int main(int argc, char** argv){
 			
 			int stat;
 		
-			wait(&stat);
+			pid_t cpid = wait(&stat);
 			
-			if(WIFEXITED(stat)){ 
-        		printf("Exit status: %d\n", WEXITSTATUS(stat)); 
-			} else if(WIFSIGNALED(stat)){ 
-	        	psignal(WTERMSIG(stat), "Exit signal");
+			if(WIFEXITED(stat)){	
+				printf("pid: %d Exit status: %d\n", cpid,
+				WEXITSTATUS(stat));
+			}else{
+				printf("child did not exit normally\n");
 			}
 			
 		} else{
