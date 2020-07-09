@@ -8,38 +8,53 @@
 #include<string.h>
 #include<err.h>
 
+int cmpfunc (const void* a, const void* b) {
+   return ( *(uint32_t*)a - *(uint32_t*)b );
+}
+
+long filelength(const char* filpath) { // don't use that. Learn POSIX API
+ 	struct stat st;
+   	if(stat(filpath, &st)) /*failure*/
+	  	return -1; // when file does not exist or is not accessible
+   	return (long) st.st_size;
+}
+
+void sort_file(char* name){
+	int fd = open(name, O_RDWR);
+	
+	uint32_t len = filelength(name) / 4;
+	//printf("length of file is %d\n", len);
+	
+	uint32_t* arr = (uint32_t*)malloc(len * sizeof(uint32_t));
+	
+	uint32_t idx = 0;
+	
+	while(read(fd, &arr[idx], 4) > 0){
+		idx++;
+	}
+
+	qsort(arr, len, sizeof(uint32_t), cmpfunc);
+	lseek(fd, 0, SEEK_SET);
+	
+	for(uint32_t i = 0; i < len; i++){
+		write(fd, &arr[i], 4);		
+	}
+	free(arr);
+	close(fd);
+}
+
 int main(int argc, char** argv){
 	/*dont forget to open for reading and writing
 	*/
 	if(argc != 2){
 		errx(1, "need exactly one argument");
 	}
-	int fd = open(argv[1], O_RDWR);
+	/*
+	shte imame 2 faila, v file1 zapisvame purvata polovina ot chislata
+	vuv file 2 ostanalite. Sled tova sortirame vseki ot tqh sus qsort i nakraq 
+	gi merge-vame v edin file 
+	*/
 	
-	if(fd == -1){
-		err(2, "%s", argv[1]);
-	}
-	
-	uint64_t count[256];
-	
-	for(int i = 0; i < 256; i++){
-		count[i] = 0;
-	}
-	
-	uint8_t b;
-	
-	while(read(fd, &b, 1) > 0){
-		count[b]++;
-	}
-	
-	lseek(fd, 0, SEEK_SET);
-	
-	for(int i = 0; i < 256; i++){
-		uint8_t num = (uint8_t)i;
-		while(count[i]-- > 0)
-			write(fd, &num, 1);
-	}
-	
-	close(fd);
+	sort_file(argv[1]);
 	exit(0);
 }
