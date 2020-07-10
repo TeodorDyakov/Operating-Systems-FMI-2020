@@ -28,7 +28,7 @@ long filelength(char* path) {
 
 void sort_file(char *path){
 	int fd = open(path, O_RDWR);
-	uint32_t len = 3;
+	uint32_t len = filelength(path);
 	uint32_t* arr = (uint32_t*)malloc(len * sizeof(uint32_t));
 	
 	uint32_t idx = 0;
