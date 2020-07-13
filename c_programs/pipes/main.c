@@ -12,7 +12,7 @@ and executes the second command.
 
 int main(int argc, char** argv){
 	
-	int fd = open("tmp", O_RDWR |O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
+	int fd = open("tmp", O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
 	int cpid = fork();
 	
 	if(cpid == -1){
@@ -28,5 +28,5 @@ int main(int argc, char** argv){
 	lseek(fd, 0, SEEK_SET);
 	dup2(fd, 0);
 	
-	execlp(argv[2], "", NULL);	
+	execlp(argv[2], "", NULL);ls	
 }

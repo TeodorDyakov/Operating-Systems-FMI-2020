@@ -17,7 +17,5 @@ int main(int argc, char** argv){
 	if(dup2(fd, 1) == -1){
 		errx(1, "error in dup2");
 	}
-
-	dup2(fd, 1);
 	execlp(argv[1], "", NULL);			
 }
