@@ -28,5 +28,5 @@ int main(int argc, char** argv){
 	lseek(fd, 0, SEEK_SET);
 	dup2(fd, 0);
 	
-	execlp(argv[2], "", NULL);ls	
+	execlp(argv[2], "", NULL);	
 }
