@@ -53,7 +53,7 @@ int main(int argc, char ** argv){
 	char c;
 	read(fd, &c, 1);
 	read(fd, &buf, strlen(id_str));
-	student.id = atoi(id_str);
+	student.id = atoi(buf);
 	printf("name: %s\nid: %d\n", student.name, student.id);
 
 }
